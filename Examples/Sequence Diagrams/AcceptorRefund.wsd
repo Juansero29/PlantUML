@@ -1,0 +1,76 @@
+@startuml refund
+
+
+title Séquence de remboursement
+hide footbox
+actor bob
+
+activate bob
+bob -> "acceptor:Acceptor" : GetRefund()
+activate "acceptor:Acceptor"
+
+
+"acceptor:Acceptor" -> "rejectPipe:RejectPipe" : AddCoins(validator.ValidatorCoins)\n<<note>>Les ValidatorCoins sont transférés\nde validator au rejectPipe
+activate "rejectPipe:RejectPipe" 
+"rejectPipe:RejectPipe" -> "validator:Validator" : <<note>> coins.addRange(getValidatorCoins())
+
+ activate "validator:Validator"
+ "validator:Validator" --> "rejectPipe:RejectPipe"
+ deactivate "validator:Validator"
+
+ 
+
+"rejectPipe:RejectPipe" --> "acceptor:Acceptor"
+deactivate "rejectPipe:RejectPipe"
+
+"acceptor:Acceptor" -> "validator:Validator" : ValidatorCoins.Clear()
+activate "validator:Validator"
+"validator:Validator" --> "acceptor:Acceptor"
+deactivate "validator:Validator"
+
+"acceptor:Acceptor" -> "rejectPipe:RejectPipe" : GetState()
+activate "rejectPipe:RejectPipe"
+
+
+alt !coins.empty()
+
+ "rejectPipe:RejectPipe" -> "display:Display" : Display("Coins to withdraw :")
+  activate "display:Display"
+  "display:Display" --> "rejectPipe:RejectPipe"
+  deactivate "display:Display"
+  
+ loop Coin c in coins
+  "rejectPipe:RejectPipe" -> "display:Display" : Display(c)
+  activate "display:Display"
+  "display:Display" --> "rejectPipe:RejectPipe"
+  deactivate "display:Display"
+  
+ end
+end
+
+"rejectPipe:RejectPipe" --> "acceptor:Acceptor"
+deactivate "rejectPipe:RejectPipe"
+
+"acceptor:Acceptor" -> "rejectPipe:RejectPipe" : WithDrawCoins()
+activate "rejectPipe:RejectPipe"
+
+
+alt !coins.empty()
+
+ "rejectPipe:RejectPipe" -> "rejectPipe:RejectPipe" : coins.Clear() \n //On simule que les pièces\nsont retirées de la goulotte
+  
+end
+
+
+"rejectPipe:RejectPipe" --> "acceptor:Acceptor"
+deactivate "rejectPipe:RejectPipe"
+
+"acceptor:Acceptor" -> "display:Display" : Display("Thank you ! ")
+activate "display:Display"
+"display:Display" --> "acceptor:Acceptor"
+deactivate "display:Display"
+
+deactivate "acceptor:Acceptor"
+"acceptor:Acceptor" --> bob
+
+@enduml

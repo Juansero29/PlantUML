@@ -1,0 +1,65 @@
+@startuml Goos
+
+skinparam classAttributeIconSize 0
+Game "1" o-- "2..4" Player: "-Players[]"
+Game "1" *-- "1" Board : "-board"
+Board "1" *-- "64" Space : "-Spaces[]"
+Space <|-- BlockedSpace
+Space <|-- HotelSpace
+Space <|-- TeleportSpace
+
+class Board{
+    {static} # NUMBER_OF_SPACES = 64 : int
+    -FillSpaces() : void
+    +ActivateSpace() :void
+}
+
+class Game{
+    {static} - NUMBER_OF_PLAYERS = 4 : int
+    - IsFinished : bool
+    - NextPlayer : Player
+    - Index : int
+
+    + Game(p : Player[])
+    + Play() : void
+    + AddPlayer(p : Player) : void
+    + GetFirstPlayer(players : Player[]) : Player
+
+}
+
+class Player{
+
+    + TurnsPlayed : int
+    + Name : string
+    # CurrentSpace : int
+    # IsBlocked : bool
+    # SuspendedTurns : int
+    + LastValuesPlayed : int[]
+    {static} - rnd : Random
+
+    + Player(name : string)
+    + Play() : void
+    + RollDice() : int
+    + MovePawn(diceResult : int) : void
+    - Speak(msg : string) : void
+    # BlockTwoTurns() : void
+}
+
+class Space{
+    + Activate(p : Player, diceResult : int[])
+}
+
+class BlockedSpace{
+    - BlockedPlayer : Player
+    + Activate(p : Player, diceResult : int[])
+}
+
+class HotelSpace{
+    + Activate(p : Player, diceResult : int[])
+}
+
+class TeleportSpace{
+    + Activate(p : Player, diceResult : int[])
+}
+
+@enduml
