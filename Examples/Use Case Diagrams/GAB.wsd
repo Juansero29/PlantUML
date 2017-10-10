@@ -11,24 +11,53 @@ actor SAVisa <<Non Humain>>
 
 
 rectangle GAB {
-    (Déposer des chèques) as (dpdc)
+    (Déposer des chèques) as (depcheq)
+    (S'authentifier) as (auth)
+    (Rétirer de l'argent \navec une carte visa) as (withdrawVisa)
+    (Rétirer de l'argent \navec une carte bancaire) as (withdrawCB)
+    (Déposer du numéraire) as (depnum)
+    (Consulter Solde) as (consult)
 
 
     PorteurCarte <|-- ClientBanque
-    PorteurCarte -- (Rétirer de l'argent)
+    PorteurCarte -- (withdrawVisa)
+
     ClientBanque -- (Consulter Solde)
-    ClientBanque -- (Déposer du numéraire)
-    ClientBanque -- (dpdc)
+    ClientBanque -- (depnum)
+    ClientBanque -- (depcheq)
+    ClientBanque -- (auth)
+
+
     (Recharger le distributeur) -- OpérateurMaintenance
     (Récuperer les cartes avalées) -- OpérateurMaintenance
     (Récuperer les chèques) -- OpérateurMaintenance
-    (dpdc) -- SIBanque
-    (Rétirer de l'argent) -- SIBanque
+
+
+    (depcheq) -- SIBanque
+    (withdrawVisa) -- SIBanque
     (Consulter Solde) -- SIBanque
-    (Déposer du numéraire) -- SIBanque
-    (Rétirer de l'argent) -- SAVisa
+    (depnum) -- SIBanque
+
+
+    (withdrawVisa) -- SAVisa
 
 }
 
+newpage
+
+rectangle GAB {
+    (Déposer des chèques) as (depcheq)
+    (S'authentifier) as (auth)
+    (Rétirer de l'argent \navec une carte visa) as (withdrawVisa)
+    (Rétirer de l'argent \navec une carte bancaire) as (withdrawCB)
+    (Déposer du numéraire) as (depnum)
+    (Consulter Solde) as (consult)
+
+    (withdrawCB) .> (auth) : <<inclut>>
+    (auth) <.down. (withdrawVisa) : <<inclut>>
+    (depnum) .up.> (auth) : <<inclut>>
+    (auth) <.up. (depcheq) : <<inclut>>
+    (consult) .left.> (auth) : <<inclut>>
+}
 
 @enduml
