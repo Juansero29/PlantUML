@@ -8,5 +8,16 @@ Sonnerie : do /sonner(5 seconds)
 Sonnerie -> Allumé
 Allumé -> Éteint : /desarmer()
 
+state State1 <<choice>>
 
+
+Sonnerie -> State1 : onDeclancherTest()
+
+nomÉtat : entry /action4
+nomÉtat : do / nomActivité
+nomÉtat : on unEvenement /action6
+nomÉtat : /action5
+
+State1 -down> nomÉtat : [ dateDuJour > 27/09/2018]
+State1 -> [*] : [else]
 @enduml
