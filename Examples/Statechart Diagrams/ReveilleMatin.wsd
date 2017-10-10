@@ -1,0 +1,12 @@
+@startuml reveillematin
+
+
+[*] -> Éteint
+Éteint -> Allumé : /onArmer(heure)\n/onAppuiSurOn()
+Allumé -> Sonnerie : when(heureCourante = heureAlarme)
+Sonnerie : do /sonner(5 seconds)
+Sonnerie -> Allumé
+Allumé -> Éteint : /desarmer()
+
+
+@enduml

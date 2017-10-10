@@ -53,7 +53,9 @@ rectangle GAB {
     (Déposer du numéraire) as (depnum)
     (Consulter Solde) as (consult)
 
-    note "Consulter est OPTIONNEL mais pour consulter\n il faut pouvoir retirer de l'argent\n avec CB." as N1
+    note "Consulter est OPTIONNEL\n mais pour consulter il faut\n pouvoir retirer de l'argent\n avec CB." as N1
+    (withdrawCB) .. N1
+    N1 .. (consult)
 
     (withdrawCB) .> (auth) : <<inclut>>
     (auth) <.down. (withdrawVisa) : <<inclut>>

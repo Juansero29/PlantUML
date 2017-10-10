@@ -8,7 +8,7 @@ Acceptor "1" *-- "1" RejectPipe: " -rejectPipe"
 Acceptor "1" *-- "1" Box: " -box"
 Acceptor "1" *-- "1" Display: " -display"
 Box "1" o-- "*" Coin: "-coins"
-Pipe "100" o--- "1" Coin: "-coins"
+Pipe "1" o--- "100" Coin: "-coins"
 Selector "1" o-- "1" Acceptor : -acceptor
 
 
