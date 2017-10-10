@@ -53,6 +53,8 @@ rectangle GAB {
     (Déposer du numéraire) as (depnum)
     (Consulter Solde) as (consult)
 
+    note "Consulter est OPTIONNEL mais pour consulter\n il faut pouvoir retirer de l'argent\n avec CB." as N1
+
     (withdrawCB) .> (auth) : <<inclut>>
     (auth) <.down. (withdrawVisa) : <<inclut>>
     (depnum) .up.> (auth) : <<inclut>>
@@ -70,7 +72,7 @@ rectangle GAB {
     (S'authentifier) as (auth)
     note "Cas d'Utilisation abstrait." as N1
     note "Cas d'Utilisation parent." as N2
-    
+
     (deparg) .right. (N1)
     (deparg) .left. (N2)
 
