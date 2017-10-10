@@ -57,7 +57,27 @@ rectangle GAB {
     (auth) <.down. (withdrawVisa) : <<inclut>>
     (depnum) .up.> (auth) : <<inclut>>
     (auth) <.up. (depcheq) : <<inclut>>
-    (consult) .left.> (auth) : <<inclut>>
+
+    (withdrawCB) .. (consult) : <<étend>>
 }
 
+newpage
+
+rectangle GAB {
+    (Déposer de l'argent) as (deparg)
+    (Déposer des chèques) as (depcheq)
+    (Déposer du numéraire) as (depnum)
+    (S'authentifier) as (auth)
+    note "Cas d'Utilisation abstrait." as N1
+    note "Cas d'Utilisation parent." as N2
+    
+    (deparg) .right. (N1)
+    (deparg) .left. (N2)
+
+    (deparg) <|-down- (depnum)
+    (deparg) .down. (auth) : <<inclut>>
+    (deparg) <|-down- (depcheq)
+
+
+}
 @enduml
